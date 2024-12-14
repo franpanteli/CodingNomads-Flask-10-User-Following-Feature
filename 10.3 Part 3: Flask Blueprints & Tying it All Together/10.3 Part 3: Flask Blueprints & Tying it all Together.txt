@@ -1,0 +1,156 @@
+Flask Blueprints & Tying it All Together
+
+What is a Flask Blueprint?
+    - Blueprints help organise your application by compartmentalising features and simplifying route management.
+    -> They function like mini-apps and can be registered with the main app
+    -> Blueprints need to be registered with an actual Flask application before they work
+
+How to Create a Flask Blueprint
+    -> Create a blueprint instance using the `Blueprint` class
+  Example:
+  ```python
+  from flask import Blueprint
+
+  main = Blueprint('main', __name__)
+
+    -> The blueprint will be a part of a larger package that is flexible and can be reused across different environments
+
+(Re)Defining the Routes
+    -> Move your view functions from the app file to views.py inside your blueprint's package
+    -> Instead of using @app.route, use @main.route where main is the name of the blueprint
+
+Example:
+from flask import render_template, redirect, url_for
+from . import main
+from .forms import NameForm
+from .. import db
+from ..models import Role, User
+
+@main.route('/', methods=['GET', 'POST'])
+def index():
+    form = NameForm()
+    if form.validate_on_submit():
+        # Process form
+        return redirect(url_for('main.index'))
+    return render_template('index.html', form=form, name=session.get('name'))
+
+(Re)Defining the Error Handlers and Form
+    -> Error handlers are now defined within the blueprint
+    -> You can define global error handlers with the @main.app_errorhandler decorator
+
+from flask import render_template
+from . import main
+
+@main.app_errorhandler(403)
+def forbidden(e):
+    return render_template("error.html", error_title="Forbidden", error_msg="You shouldn't be here!"), 403
+
+@main.app_errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", error_title="Not Found", error_msg="That page doesn't exist"), 404
+
+@main.app_errorhandler(500)
+def internal_server_error(e):
+    return render_template("error.html", error_title="Internal Server Error", error_msg="Sorry, we seem to be experiencing some technical difficulties"), 500
+
+Registering the Blueprint
+    -> Register your blueprint in the create_app() function
+
+Example:
+from .main import main as main_blueprint
+
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    
+    # Register blueprint
+    app.register_blueprint(main_blueprint)
+
+    return app
+
+Application Script
+    -> The application script is the entry point of the app and ties everything together
+    -> It imports and registers blueprints, manages configurations, and initialises necessary extensions
+
+Example:
+from flask import Flask
+from app.main import main as main_blueprint
+from app import create_app, db
+
+app = create_app('default')
+
+# Register the main blueprint
+app.register_blueprint(main_blueprint)
+
+# Initialise the database
+db.init_app(app)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+Inheriting Configuration Classes
+    -> Use configuration classes to handle different environments (development, testing, production)
+    -> Each configuration class inherits from a base Config class
+
+Example:
+
+import os
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'keep it secret'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_DEV_URL') or 'sqlite:///dev.db'
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_TEST_URL') or 'sqlite:///test.db'
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///prod.db'
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
+
+Connecting It All Together
+    -> Use the FLASK_CONFIG environment variable to specify the configuration to use
+    -> Update your create_app() function to use the configuration based on the environment
+
+Example:
+import os
+from flask import Flask
+from app.main import main as main_blueprint
+
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    
+    app.register_blueprint(main_blueprint)
+
+    return app
+
+# To use the default configuration
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+
+Development, Testing, and Production Configs
+    -> The DevelopmentConfig, TestingConfig, and ProductionConfig classes should be defined for different stages of development
+    -> For testing, the app configuration should disable error catching and set up the test database
+    -> The production configuration should point to the production database
+
+Example:
+
+export FLASK_APP=app.py
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+export FLASK_CONFIG=development
+
+Summary
+    -> By using Flask Blueprints, you compartmentalised features and improved route management
+    -> You registered blueprints to activate them within the app
+    -> The app structure is now more modular and can be scaled more effectively across environments

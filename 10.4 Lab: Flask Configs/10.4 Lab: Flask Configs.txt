@@ -1,0 +1,41 @@
+-> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
+   -> Lab: Flask Configs  
+   -> 3 min to complete á By Brandon Gigous  
+
+-> Introduction to the Lab  
+   -> If you haven't already cloned the Python Flask labs project and opened it in VS Code, please do so before starting this lab  
+   -> The lab focuses on Flask app configuration, the application factory pattern, and blueprints for organising Flask applications  
+   -> This is an important step in scaling up a Flask application for production-level development  
+
+-> Learn by Doing  
+   -> 1. Navigate to the labs project and open it in VS Code  
+      -> This involves accessing the cloned project folder on your local machine and ensuring the environment is properly set up for Flask development  
+   -> 2. Complete all the exercises in the folder  
+      -> The exercises will guide you through key concepts such as configuring Flask apps, creating factories, and organising with blueprints  
+      -> Ensure each task is completed thoroughly to gain hands-on experience with Flask configurations  
+   -> 3. If you're subscribed to our membership or mentorship programmes, please feel free to reach out on Discord for a review or any help  
+      -> Take advantage of support resources like Discord for feedback on your work or troubleshooting any issues you may encounter  
+   -> 4. When you complete the labs, please be sure to push your work to GitHub  
+      -> Version control is essential in software development. Ensure all code changes are committed and pushed to a remote GitHub repository  
+      -> Pushing to GitHub helps you keep track of your progress, collaborate with others, and demonstrate your skills to potential employers or mentors  
+   -> 5. This step is easily and often overlooked, but it is one of the most important  
+      -> It's common to forget about version control, but pushing your work to GitHub regularly is a critical habit to form as a developer  
+   -> 6. Version control and collaboration tools, most notably Git & GitHub, are used ubiquitously by all software engineers and engineering companies  
+      -> Git is the industry-standard version control system, and GitHub provides a platform for collaboration and showcasing your work  
+   -> 7. We advise that you do not skip it. Prove your work. Push it to GitHub. Get the practice, and get those GitHub Greens!  
+      -> Getting familiar with GitHub will improve your software engineering workflow and increase your visibility in the developer community  
+   -> 8. Looking at the two contribution graphs below, who would you hire?  
+      -> The graphs represent GitHub contribution activity. It's important to consistently contribute to projects to demonstrate dedication and skill  
+
+-> 10_scaling_up/01_blueprints_and_application_factory  
+   -> This section introduces key concepts for scaling up a Flask app: blueprints and the application factory pattern  
+   -> Blueprints allow you to modularise your application into components, while the application factory enables creating Flask app instances dynamically  
+   -> Mastering these concepts is crucial when building larger Flask applications  
+
+-> 13/12/2024, 16:06 Flask App Configuration Lab Assignment  
+   -> The lab will walk you through the setup and configuration of a Flask application, including managing settings for different environments  
+   -> Flask app configurations include settings for databases, debugging, sessions, etc., which you will configure in this lab  
+
+-> Lab Resources  
+   -> Flask App Configuration Lab Assignment URL:  
+     -> [https://codingnomads.com/python-flask-app-config-lab](https://codingnomads.com/python-flask-app-config-lab)
