@@ -1,9 +1,8 @@
 -> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
    -> Part 2: Flask Application Factories  
-   -> 13 min to complete á By Brandon Gigous  
 
 -> Introduction  
-   -> In this lesson, youÕll dive deeper into Flask Application Factories, a powerful design pattern that allows you to create Flask app instances with different configurations based on the environment  
+   -> In this lesson, you'll dive deeper into Flask Application Factories, a powerful design pattern that allows you to create Flask app instances with different configurations based on the environment  
    -> This is particularly useful when working with multiple configurations such as development, production, and testing environments, as it allows you to easily switch between them  
 
 -> Flask Application Factories  
@@ -20,7 +19,7 @@
      -> The local development app might use an SQLite database or a mock database, while the production app uses a robust, production-grade database like PostgreSQL  
      -> Security settings (like the `SECRET_KEY`) should not be the same for development and production  
      -> The logging level may differ between development (where you want detailed logs) and production (where you want to limit logging to errors only)  
-   -> The main point is that your development app and production app need different configurations, and hardcoding them into the app isnÕt scalable or maintainable  
+   -> The main point is that your development app and production app need different configurations, and hardcoding them into the app isn't scalable or maintainable  
    -> The application factory allows you to automate the configuration process and easily create a Flask app with the necessary settings for each environment  
 
 -> The Function: `create_app()`  
@@ -57,7 +56,7 @@
 -> Routes Inside A Function  
    -> In a typical Flask application, routes are defined directly in the main application file  
    -> However, in the application factory pattern, routes are defined inside the `create_app()` function, which may seem odd at first since functions are nested  
-   -> DonÕt worry Ñ Python allows for functions to be defined inside other functions, so this is perfectly valid  
+   -> Don't worry ' Python allows for functions to be defined inside other functions, so this is perfectly valid  
    -> Although the routes are nested within `create_app()`, they will function exactly the same way as in a flat, single-file app  
    -> This modular approach is great for larger applications, as it allows you to separate concerns and keep your code organised  
 
@@ -81,14 +80,14 @@
 
 -> Learn by Doing  
    -> Exercise: Create An Application Factory  
-   -> Now that you understand the basics of the application factory pattern, itÕs time to put your knowledge into practice  
-   -> In this exercise, youÕll be given a project that is partially set up with an attempt at an application factory  
+   -> Now that you understand the basics of the application factory pattern, it's time to put your knowledge into practice  
+   -> In this exercise, you'll be given a project that is partially set up with an attempt at an application factory  
    -> Your task is to modify the `__init__.py` file of the project to make the application factory function work correctly  
-   -> As you make changes, you may encounter errors that will need fixing Ñ donÕt worry, this is part of the learning process  
-   -> Once you complete the exercise, youÕll have a solid grasp of how to implement an application factory in Flask  
+   -> As you make changes, you may encounter errors that will need fixing ' don't worry, this is part of the learning process  
+   -> Once you complete the exercise, you'll have a solid grasp of how to implement an application factory in Flask  
 
 -> Revisit Your Application Factories  
-   -> Once youÕve completed the exercise, apply the same techniques to your own projects  
+   -> Once you've completed the exercise, apply the same techniques to your own projects  
    -> Refactor your own Flask apps to use the application factory pattern, making them more modular and configurable for different environments  
 
 -> Summary: Flask Application Factories  

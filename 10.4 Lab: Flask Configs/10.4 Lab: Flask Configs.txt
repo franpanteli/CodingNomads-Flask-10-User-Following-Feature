@@ -1,6 +1,5 @@
 -> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
    -> Lab: Flask Configs  
-   -> 3 min to complete á By Brandon Gigous  
 
 -> Introduction to the Lab  
    -> If you haven't already cloned the Python Flask labs project and opened it in VS Code, please do so before starting this lab  

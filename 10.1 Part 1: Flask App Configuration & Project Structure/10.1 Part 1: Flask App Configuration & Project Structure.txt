@@ -1,6 +1,5 @@
 -> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
    -> Part 1: Flask App Configuration & Project Structure  
-   -> 13 min to complete · By Brandon Gigous  
 
 -> Introduction  
    -> This lesson introduces the process of organising a Flask project into a more modular structure, which is essential for scalability and maintainability in larger applications  
