@@ -1,0 +1,110 @@
+-> Creating and Registering a Blueprint in Flask
+    -> Organising Project Files
+        -> Place all your project files under a main project folder, making it easier to manage as the application scales
+        -> The application factory file should be stored separately in its own location, such as a subfolder like `app/` or `src/`
+        -> This keeps the project organised and adheres to Flask's recommended project structure, especially for larger applications
+        -> In this structure, you can also separate logic into different components such as `models.py`, `views.py`, `forms.py`, etc.
+        -> Separating logic and resources into their respective directories makes it easier to scale and maintain your app as it grows
+
+    -> Creating the Main Blueprint
+        -> Use Flask's `Blueprint` object to create modular components for your app (e.g., a `main` blueprint for general routes)
+        -> A blueprint acts as a template that can hold routes, error handlers, and other functions specific to certain parts of the application
+        -> Creating a blueprint allows you to separate logic into manageable pieces, improving code maintainability and readability
+        -> To initialise a blueprint:
+            -> Call `Blueprint` with the name of the blueprint (typically `main` for the main section of the app) and the `__name__` argument
+            -> This is similar to initialising a class and passing necessary arguments (like passing variables to a constructor)
+        -> Example:
+            ```python
+            from flask import Blueprint
+            main = Blueprint('main', __name__)
+            ```
+        -> This creates a `main` blueprint which will later be registered with the Flask app
+
+    -> Registering Other Modules
+        -> Instead of defining routes directly in the main app file, you will define them within blueprints, keeping the application modular
+        -> You will import other modules as needed, including models and controllers, but avoid including form handling logic directly in the main file
+        -> Defining routes inside a blueprint allows you to logically group related routes together and keeps your code organised
+        -> Once the routes are placed in the blueprint, the blueprint needs to be registered with the Flask application
+        -> Example:
+            ```python
+            from app.main import main  # Import the main blueprint
+            app.register_blueprint(main)  # Register the blueprint with the app
+            ```
+
+    -> Changing URLs for Blueprint Routes
+        -> Blueprint routes are defined relative to the blueprint’s name, which helps avoid conflicts between routes in different blueprints
+        -> You can change the URL of a route by providing the blueprint’s name and the function name
+        -> For example, in the `main` blueprint, the `index` route is referred to as `main.index` in the application
+        -> However, when you're working within the blueprint itself, you can use a shorthand like `.index` instead of `main.index`
+        -> This makes it easier to reference routes internally within the blueprint without the need to use the full namespace
+        -> Example:
+            ```python
+            @main.route('/')
+            def index():
+                return 'Hello, World!'
+            ```
+
+    -> Adding Routes to the Blueprint
+        -> You define routes within the blueprint object using the `@main.route()` decorator, rather than directly with the Flask `@app.route()`
+        -> Once the routes are added to the blueprint, they are linked to the blueprint object, allowing Flask to route requests based on blueprint-defined URLs
+        -> After defining the routes, the blueprint object must replace the Flask app object to handle routing
+        -> The main Flask app should be registered with the blueprint so that Flask knows how to manage routes under that blueprint
+        -> Example:
+            ```python
+            @main.route('/user/<username>')
+            def profile(username):
+                return f'Hello, {username}!'
+            ```
+
+    -> Moving Other Logic into the Blueprint
+        -> As your app grows, you can move other functions, such as error handlers or utility functions, into the blueprint
+        -> This keeps the application organised by grouping related functionality together (e.g., user authentication, general routes, etc.)
+        -> With this separation, the code becomes cleaner, more modular, and easier to debug or extend in the future
+
+    -> Moving Forms Logic to a Separate `forms.py` File
+        -> To better organise the forms-related logic, move all form handling to a `forms.py` file
+        -> The `forms.py` file will contain classes or functions that define form fields, validation logic, and any error handling
+        -> This separation allows you to keep the view and route logic free from clutter and lets you focus on functionality within forms
+        -> You can import your form classes or functions from `forms.py` into your routes to keep the structure clean
+        -> Example:
+            ```python
+            from app.forms import LoginForm
+            ```
+
+    -> Registering the Blueprint with the Application
+        -> Once your blueprint has been created and contains all necessary routes and logic, register it with the Flask application
+        -> This is done in the application factory, which is a function that creates an instance of the Flask app
+        -> The `register_blueprint` method links the blueprint to the app, allowing Flask to recognise and process routes defined in the blueprint
+        -> Ensure that the blueprint is properly registered before running the app, so it knows which blueprint to handle for specific routes
+        -> Example:
+            ```python
+            def create_app():
+                app = Flask(__name__)
+                app.register_blueprint(main)  # Register the main blueprint with the app
+                return app
+            ```
+
+    -> Resolving Remaining Imports
+        -> After moving the logic into blueprints and restructuring the project files, you will likely encounter import issues
+        -> Make sure that all the modules (e.g., `models`, `forms`, `views`) are imported correctly into the files where they are needed
+        -> Circular imports can sometimes be an issue in Flask applications, so ensure that you import only what's necessary and use relative imports where possible
+        -> Example:
+            ```python
+            from app.main import main
+            from app.forms import LoginForm
+            ```
+
+    -> Setting the Flask App Environment Variable
+        -> To run the Flask app in the correct environment, set the `FLASK_APP` environment variable to point to the application factory file
+        -> This tells Flask which file to run when launching the app, and it's essential when you have multiple configuration files or factories
+        -> Use the following command to set the environment variable:
+            ```bash
+            export FLASK_APP=your_application.py  # Set Flask environment variable to the app's file
+            ```
+        -> Additionally, set `FLASK_ENV=development` to run Flask in development mode, enabling debug features
+
+    -> Conclusion
+        -> By following these steps, you've created and registered a blueprint, organised your project, and ensured the app is set up correctly
+        -> Using blueprints allows you to keep routes and logic modular, improving code organisation and scalability
+        -> With blueprints, the app becomes easier to extend and maintain as it grows in complexity
+        -> The app is now ready for further development, with clean separation of concerns and better maintainability
