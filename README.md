@@ -1,6 +1,6 @@
 # CodingNomads-Flask-10-User-Following-Feature
 ## Repository File Tree
-This repository contains my work for the 16th module in the [Coding Nomads Flask Web Framework](https://codingnomads.com/course/python-flask-web-framework) course. I completed this 21-module course as part of my independent learning, to invest in my Python skills. I produced an in-depth library of resources on this module, whose file tree is provided below. 
+This repository contains my work for the 10th module in the [Coding Nomads Flask Web Framework](https://codingnomads.com/course/python-flask-web-framework) course. I completed this 21-module course as part of my independent learning, to invest in my Python skills. I produced an in-depth library of resources on this module, whose file tree is provided below. 
 
 <img width="1136" alt="Screenshot 2025-01-19 at 16 00 55" src="https://github.com/user-attachments/assets/d5c5ab01-21f7-4252-a1b0-495ee13850a3" />
 
