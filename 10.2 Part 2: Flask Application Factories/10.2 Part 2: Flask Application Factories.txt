@@ -1,98 +1,98 @@
--> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
-   -> Part 2: Flask Application Factories  
+-> scaling up: configs, application factory, and blueprints lesson
+  -> part 2: flask application factories
 
--> Introduction  
-   -> In this lesson, you'll dive deeper into Flask Application Factories, a powerful design pattern that allows you to create Flask app instances with different configurations based on the environment  
-   -> This is particularly useful when working with multiple configurations such as development, production, and testing environments, as it allows you to easily switch between them  
+-> introduction
+  -> in this lesson, you'll dive deeper into flask application factories, a powerful design pattern that allows you to create flask app instances with different configurations based on the environment
+  -> this is particularly useful when working with multiple configurations such as development, production, and testing environments, as it allows you to easily switch between them
 
--> Flask Application Factories  
-   -> An application factory in Flask is a function that returns a new Flask application instance configured according to the given parameters or environment settings  
-   -> It is a core concept for scaling Flask applications, enabling you to manage multiple configurations without duplicating code  
-   -> The factory method pattern (commonly used in class-based programming) allows for the creation of objects without having to explicitly define the exact class to instantiate  
-   -> In Flask, the function `create_app()` is typically used to implement the application factory pattern  
-   -> With this pattern, you can generate a new app instance with specific configurations, making it easy to switch between environments such as development and production  
+-> flask application factories
+  -> an application factory in flask is a function that returns a new flask application instance configured according to the given parameters or environment settings
+  -> it is a core concept for scaling flask applications, enabling you to manage multiple configurations without duplicating code
+  -> the factory method pattern (commonly used in class-based programming) allows for the creation of objects without having to explicitly define the exact class to instantiate
+  -> in flask, the function `create_app()` is typically used to implement the application factory pattern
+  -> with this pattern, you can generate a new app instance with specific configurations, making it easy to switch between environments such as development and production
 
--> Why do we need Application Factories?  
-   -> At first, it may seem unnecessary to create multiple instances of the same app, but there are critical differences between a development environment and a production environment that you need to account for  
-   -> The app you develop locally (in development) may require a different set of configurations compared to the one deployed to production  
-   -> For example:  
-     -> The local development app might use an SQLite database or a mock database, while the production app uses a robust, production-grade database like PostgreSQL  
-     -> Security settings (like the `SECRET_KEY`) should not be the same for development and production  
-     -> The logging level may differ between development (where you want detailed logs) and production (where you want to limit logging to errors only)  
-   -> The main point is that your development app and production app need different configurations, and hardcoding them into the app isn't scalable or maintainable  
-   -> The application factory allows you to automate the configuration process and easily create a Flask app with the necessary settings for each environment  
+-> why do we need application factories?
+  -> at first, it may seem unnecessary to create multiple instances of the same app, but there are critical differences between a development environment and a production environment that you need to account for
+  -> the app you develop locally (in development) may require a different set of configurations compared to the one deployed to production
+  -> for example:
+    -> the local development app might use an sqlite database or a mock database, while the production app uses a robust, production-grade database like postgresql
+    -> security settings (like the `secret_key`) should not be the same for development and production
+    -> the logging level may differ between development (where you want detailed logs) and production (where you want to limit logging to errors only)
+  -> the main point is that your development app and production app need different configurations, and hardcoding them into the app isn't scalable or maintainable
+  -> the application factory allows you to automate the configuration process and easily create a flask app with the necessary settings for each environment
 
--> The Function: `create_app()`  
-   -> The `create_app()` function is at the core of the application factory pattern in Flask  
-   -> It is responsible for creating a new instance of the Flask application and configuring it based on the environment or parameters passed to it  
-   -> A typical `create_app()` function involves:  
-     1. Initialising the Flask application instance  
-     2. Loading configuration settings (either hardcoded or from environment variables)  
-     3. Initialising extensions like `SQLAlchemy`, `Bootstrap`, or others  
-     4. Defining routes and error handlers  
-     5. Returning the configured Flask application instance  
-   -> A basic example of the `create_app()` function might look like this:  
-     ```python  
-     from flask import Flask  
-     from flask_bootstrap import Bootstrap  
-     from flask_sqlalchemy import SQLAlchemy  
-     import os  
+-> the function: `create_app()`
+  -> the `create_app()` function is at the core of the application factory pattern in flask
+  -> it is responsible for creating a new instance of the flask application and configuring it based on the environment or parameters passed to it
+  -> a typical `create_app()` function involves:
+    1. initialising the flask application instance
+    2. loading configuration settings (either hardcoded or from environment variables)
+    3. initialising extensions like `sqlalchemy`, `bootstrap`, or others
+    4. defining routes and error handlers
+    5. returning the configured flask application instance
+  -> a basic example of the `create_app()` function might look like this:
+    ```python
+    from flask import Flask
+    from flask_bootstrap import Bootstrap
+    from flask_sqlalchemy import SQLAlchemy
+    import os
 
-     db = SQLAlchemy()  
-     bootstrap = Bootstrap()  
+    db = SQLAlchemy()
+    bootstrap = Bootstrap()
 
-     def create_app(config_name='default'):  
-         app = Flask(__name__)  
-         app.config.from_object(config_name)  # Load config based on the environment  
-         bootstrap.init_app(app)  # Initialise the Bootstrap extension  
-         db.init_app(app)  # Initialise the database  
-         @app.route('/')  
-         def index():  
-             return "<p>Welcome to the home page</p>"  
-         return app  
-     ```  
-   -> In this example, the `create_app()` function creates a new Flask app instance, loads the specified configuration (`config_name`), initialises the necessary extensions, and defines the app's routes before returning the app instance  
+    def create_app(config_name='default'):
+      app = Flask(__name__)
+      app.config.from_object(config_name) # Load config based on the environment
+      bootstrap.init_app(app) # Initialise the Bootstrap extension
+      db.init_app(app) # Initialise the database
+      @app.route('/')
+      def index():
+        return "<p>Welcome to the home page</p>"
+      return app
+    ```
+  -> in this example, the `create_app()` function creates a new flask app instance, loads the specified configuration (`config_name`), initialises the necessary extensions, and defines the app's routes before returning the app instance
 
--> Routes Inside A Function  
-   -> In a typical Flask application, routes are defined directly in the main application file  
-   -> However, in the application factory pattern, routes are defined inside the `create_app()` function, which may seem odd at first since functions are nested  
-   -> Don't worry ' Python allows for functions to be defined inside other functions, so this is perfectly valid  
-   -> Although the routes are nested within `create_app()`, they will function exactly the same way as in a flat, single-file app  
-   -> This modular approach is great for larger applications, as it allows you to separate concerns and keep your code organised  
+-> routes inside a function
+  -> in a typical flask application, routes are defined directly in the main application file
+  -> however, in the application factory pattern, routes are defined inside the `create_app()` function, which may seem odd at first since functions are nested
+  -> don't worry ' python allows for functions to be defined inside other functions, so this is perfectly valid
+  -> although the routes are nested within `create_app()`, they will function exactly the same way as in a flat, single-file app
+  -> this modular approach is great for larger applications, as it allows you to separate concerns and keep your code organised
 
--> Extension Initialisation  
-   -> Extensions in Flask (like `SQLAlchemy`, `Bootstrap`, `LoginManager`, etc.) often need to be initialised with the Flask app instance  
-   -> In a single-file Flask app, extensions are typically initialised immediately after they are declared  
-   -> In an application factory, however, extensions are declared at the top level (outside the `create_app()` function), but their initialisation is delayed until the app instance is created  
-   -> This is done by calling their `init_app()` methods after the Flask app instance has been created  
-   -> Example of initialising extensions within the `create_app()` function:  
-     ```python  
-     db.init_app(app)  # Initialise the database extension  
-     bootstrap.init_app(app)  # Initialise the Bootstrap extension  
-     ```  
+-> extension initialisation
+  -> extensions in flask (like `sqlalchemy`, `bootstrap`, `loginmanager`, etc.) often need to be initialised with the flask app instance
+  -> in a single-file flask app, extensions are typically initialised immediately after they are declared
+  -> in an application factory, however, extensions are declared at the top level (outside the `create_app()` function), but their initialisation is delayed until the app instance is created
+  -> this is done by calling their `init_app()` methods after the flask app instance has been created
+  -> example of initialising extensions within the `create_app()` function:
+    ```python
+    db.init_app(app) # Initialise the database extension
+    bootstrap.init_app(app) # Initialise the Bootstrap extension
+    ```
 
--> Application Returned By A Function  
-   -> The key difference between a traditional Flask app and an app created using the application factory pattern is that the app is returned by the `create_app()` function  
-   -> Instead of having a Flask instance created directly in your script, you define the factory function and call it when needed  
-   -> The `create_app()` function can take a `config_name` parameter, which allows you to specify which configuration to load for the Flask app instance  
-   -> When you call `create_app()`, it returns a fully configured app instance based on the parameters provided, ready to run  
-   -> This allows Flask to easily generate multiple app instances, each configured differently for different environments  
+-> application returned by a function
+  -> the key difference between a traditional flask app and an app created using the application factory pattern is that the app is returned by the `create_app()` function
+  -> instead of having a flask instance created directly in your script, you define the factory function and call it when needed
+  -> the `create_app()` function can take a `config_name` parameter, which allows you to specify which configuration to load for the flask app instance
+  -> when you call `create_app()`, it returns a fully configured app instance based on the parameters provided, ready to run
+  -> this allows flask to easily generate multiple app instances, each configured differently for different environments
 
--> Learn by Doing  
-   -> Exercise: Create An Application Factory  
-   -> Now that you understand the basics of the application factory pattern, it's time to put your knowledge into practice  
-   -> In this exercise, you'll be given a project that is partially set up with an attempt at an application factory  
-   -> Your task is to modify the `__init__.py` file of the project to make the application factory function work correctly  
-   -> As you make changes, you may encounter errors that will need fixing ' don't worry, this is part of the learning process  
-   -> Once you complete the exercise, you'll have a solid grasp of how to implement an application factory in Flask  
+-> learn by doing
+  -> exercise: create an application factory
+  -> now that you understand the basics of the application factory pattern, it's time to put your knowledge into practice
+  -> in this exercise, you'll be given a project that is partially set up with an attempt at an application factory
+  -> your task is to modify the `__init__.py` file of the project to make the application factory function work correctly
+  -> as you make changes, you may encounter errors that will need fixing ' don't worry, this is part of the learning process
+  -> once you complete the exercise, you'll have a solid grasp of how to implement an application factory in flask
 
--> Revisit Your Application Factories  
-   -> Once you've completed the exercise, apply the same techniques to your own projects  
-   -> Refactor your own Flask apps to use the application factory pattern, making them more modular and configurable for different environments  
+-> revisit your application factories
+  -> once you've completed the exercise, apply the same techniques to your own projects
+  -> refactor your own flask apps to use the application factory pattern, making them more modular and configurable for different environments
 
--> Summary: Flask Application Factories  
-   -> Flask Application Factories are a powerful tool that allows you to create Flask app instances with environment-specific configurations  
-   -> This method is especially useful for managing different settings for development, testing, and production environments  
-   -> The factory method helps to automate the configuration process, making it easier to handle various configurations without hardcoding them  
-   -> By using the `create_app()` function, you can modularise your Flask app, making it easier to scale and maintain  
-   -> With Flask Application Factories, you can build more flexible and scalable applications that are easier to manage across different environments  
+-> summary: flask application factories
+  -> flask application factories are a powerful tool that allows you to create flask app instances with environment-specific configurations
+  -> this method is especially useful for managing different settings for development, testing, and production environments
+  -> the factory method helps to automate the configuration process, making it easier to handle various configurations without hardcoding them
+  -> by using the `create_app()` function, you can modularise your flask app, making it easier to scale and maintain
+  -> with flask application factories, you can build more flexible and scalable applications that are easier to manage across different environments

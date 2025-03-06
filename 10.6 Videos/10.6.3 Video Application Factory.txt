@@ -1,59 +1,59 @@
--> Creating an Application Factory in Flask
-    -> Overview of the Application Factory Pattern
-        -> The application factory pattern is a method used to create the Flask application instance dynamically
-        -> It encapsulates the app creation process within a function, allowing for more flexible app configuration
-        -> This pattern is especially useful for managing Flask extensions (e.g., SQLAlchemy, Migrate, etc.) and helps in setting up the app in different environments (development, testing, production)
-        -> The factory function initialises the app with configuration settings, extensions, and any necessary setup, making it easier to scale and modify the app as needed
+-> creating an application factory in flask
+  -> overview of the application factory pattern
+      -> the application factory pattern is a method used to create the flask application instance dynamically
+      -> it encapsulates the app creation process within a function, allowing for more flexible app configuration
+      -> this pattern is especially useful for managing flask extensions (e.g., sqlalchemy, migrate, etc.) and helps in setting up the app in different environments (development, testing, production)
+      -> the factory function initialises the app with configuration settings, extensions, and any necessary setup, making it easier to scale and modify the app as needed
 
-    -> Why Use an Application Factory?
-        -> The application factory provides a clean and modular structure, improving maintainability and testability
-        -> By deferring the creation of the app instance, it allows Flask apps to be configured with different settings, making the app more reusable
-        -> The pattern is especially important when dealing with multiple Flask apps in a project, where each app may have different configurations
-        -> It also supports better deployment practices, as extensions can be initialised outside the application factory, allowing for flexible and modular initialisation
+  -> why use an application factory?
+      -> the application factory provides a clean and modular structure, improving maintainability and testability
+      -> by deferring the creation of the app instance, it allows flask apps to be configured with different settings, making the app more reusable
+      -> the pattern is especially important when dealing with multiple flask apps in a project, where each app may have different configurations
+      -> it also supports better deployment practices, as extensions can be initialised outside the application factory, allowing for flexible and modular initialisation
 
-    -> Setting Up the Application Factory
-        -> Open the `models.py` and `__init__.py` files, which are part of the app’s structure, to begin setting up the factory
-        -> In `__init__.py`, define the factory function that will be responsible for creating and configuring the Flask app instance
-        -> This function takes configuration input and is flexible enough to be used with different configurations (such as development, production, or testing)
-        -> The factory function will not immediately create the app instance, but will instead return it when called, giving you more control over how the app is set up
+  -> setting up the application factory
+      -> open the `models.py` and `__init__.py` files, which are part of the app’s structure, to begin setting up the factory
+      -> in `__init__.py`, define the factory function that will be responsible for creating and configuring the flask app instance
+      -> this function takes configuration input and is flexible enough to be used with different configurations (such as development, production, or testing)
+      -> the factory function will not immediately create the app instance, but will instead return it when called, giving you more control over how the app is set up
 
-    -> Importing Extensions and Initialising the App
-        -> Extensions like Flask-SQLAlchemy, Flask-Migrate, and others need to be initialised within the app but can be done after the application instance is created
-        -> This means extensions don’t have to be initialised inside the factory function, but can be passed into the function when the app is created
-        -> It’s possible to initialise extensions both inside the factory and outside of it, depending on the deployment and configuration needs
-        -> This flexibility allows the factory function to remain modular and scalable while also giving you control over when and how extensions are initialised
+  -> importing extensions and initialising the app
+      -> extensions like flask-sqlalchemy, flask-migrate, and others need to be initialised within the app but can be done after the application instance is created
+      -> this means extensions don’t have to be initialised inside the factory function, but can be passed into the function when the app is created
+      -> it’s possible to initialise extensions both inside the factory and outside of it, depending on the deployment and configuration needs
+      -> this flexibility allows the factory function to remain modular and scalable while also giving you control over when and how extensions are initialised
 
-    -> Flask Factory Function Setup
-        -> In the application factory, import the necessary Flask extensions (such as Flask-SQLAlchemy, Flask-Migrate) and configure them within the app
-        -> Use the `Flask` constructor inside the factory function to create the app instance
-        -> The factory function accepts configuration settings (typically passed as a dictionary or class) that configure the app's behaviour, such as database URI, secret keys, debug mode, etc.
-        -> By using `app.config.from_object()` or `app.config.from_mapping()`, you can load the app configuration from an external source (e.g., configuration file or environment variables)
+  -> flask factory function setup
+      -> in the application factory, import the necessary flask extensions (such as flask-sqlalchemy, flask-migrate) and configure them within the app
+      -> use the `flask` constructor inside the factory function to create the app instance
+      -> the factory function accepts configuration settings (typically passed as a dictionary or class) that configure the app's behaviour, such as database uri, secret keys, debug mode, etc.
+      -> by using `app.config.from_object()` or `app.config.from_mapping()`, you can load the app configuration from an external source (e.g., configuration file or environment variables)
 
-    -> Managing Configuration with the `configure` Method
-        -> The `configure` method grabs the configuration values from the configuration file, usually represented as a dictionary or class object
-        -> The factory function allows the configuration to be passed directly into the app during its creation, simplifying the process of applying settings like database configuration, security settings, and debug options
-        -> The app can use this configuration dynamically during initialisation, reducing hardcoded values and improving maintainability
-        -> Configuration can be retrieved from various sources (e.g., environment variables, a `.env` file, or a configuration class), making it easy to manage different app environments (development, production, etc.)
+  -> managing configuration with the `configure` method
+      -> the `configure` method grabs the configuration values from the configuration file, usually represented as a dictionary or class object
+      -> the factory function allows the configuration to be passed directly into the app during its creation, simplifying the process of applying settings like database configuration, security settings, and debug options
+      -> the app can use this configuration dynamically during initialisation, reducing hardcoded values and improving maintainability
+      -> configuration can be retrieved from various sources (e.g., environment variables, a `.env` file, or a configuration class), making it easy to manage different app environments (development, production, etc.)
 
-    -> Delayed Extension Initialisation
-        -> Extensions can be initialised outside the factory function if desired, allowing for better control and flexibility when working with extensions like SQLAlchemy, Migrate, and others
-        -> This delayed initialisation is especially helpful in large-scale apps or deployment scenarios where some extensions might need to be configured only in specific environments or stages of the app lifecycle
-        -> Instead of initialising extensions immediately in the factory function, you can initialise them when needed, passing the required app instance to them dynamically
-        -> This approach provides greater flexibility and makes the app easier to configure and maintain across different deployment stages
+  -> delayed extension initialisation
+      -> extensions can be initialised outside the factory function if desired, allowing for better control and flexibility when working with extensions like sqlalchemy, migrate, and others
+      -> this delayed initialisation is especially helpful in large-scale apps or deployment scenarios where some extensions might need to be configured only in specific environments or stages of the app lifecycle
+      -> instead of initialising extensions immediately in the factory function, you can initialise them when needed, passing the required app instance to them dynamically
+      -> this approach provides greater flexibility and makes the app easier to configure and maintain across different deployment stages
 
-    -> Returning the Flask Application Instance
-        -> After all configurations, extensions, and setup have been applied, the application instance is returned by the factory function
-        -> This return statement finalises the app setup and provides the app instance, ready to be used for routing, handling requests, and serving responses
-        -> Returning the app instance from the factory function ensures that all setup steps (such as applying configurations, initialising extensions) are completed before the app is used
+  -> returning the flask application instance
+      -> after all configurations, extensions, and setup have been applied, the application instance is returned by the factory function
+      -> this return statement finalises the app setup and provides the app instance, ready to be used for routing, handling requests, and serving responses
+      -> returning the app instance from the factory function ensures that all setup steps (such as applying configurations, initialising extensions) are completed before the app is used
 
-    -> Importing Database Models into the App
-        -> After creating the application factory, you can import your database models (e.g., SQLAlchemy models) into the app structure
-        -> This allows you to use the models with the initialised app instance and perform database operations
-        -> Models can be imported into the `__init__.py` file, ensuring that they are available for the app to use once it is initialised
-        -> Importing models into the factory setup makes it easier to structure your app’s architecture and maintain separation between app logic and the database layer
+  -> importing database models into the app
+      -> after creating the application factory, you can import your database models (e.g., sqlalchemy models) into the app structure
+      -> this allows you to use the models with the initialised app instance and perform database operations
+      -> models can be imported into the `__init__.py` file, ensuring that they are available for the app to use once it is initialised
+      -> importing models into the factory setup makes it easier to structure your app’s architecture and maintain separation between app logic and the database layer
 
-    -> Summary and Conclusion
-        -> In this video, you learned how to create an application factory in Flask
-        -> The application factory pattern is essential for managing configurations, extensions, and different app environments in a clean and scalable way
-        -> You learned how to set up the factory function, import extensions, configure the app, and return the app instance
-        -> The next video will dive deeper into completing the app setup, including more details on how to structure and organise your app’s functionality
+  -> summary and conclusion
+      -> in this video, you learned how to create an application factory in flask
+      -> the application factory pattern is essential for managing configurations, extensions, and different app environments in a clean and scalable way
+      -> you learned how to set up the factory function, import extensions, configure the app, and return the app instance
+      -> the next video will dive deeper into completing the app setup, including more details on how to structure and organise your app’s functionality

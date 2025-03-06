@@ -1,107 +1,107 @@
--> Scaling Up: Configs, Application Factory, and Blueprints Lesson  
-   -> Part 1: Flask App Configuration & Project Structure  
+-> scaling up: configs, application factory, and blueprints lesson
+  -> part 1: flask app configuration & project structure
 
--> Introduction  
-   -> This lesson introduces the process of organising a Flask project into a more modular structure, which is essential for scalability and maintainability in larger applications  
-   -> After completing this part, continue to the next sections of the series, which cover the use of configuration classes, application factories, and blueprints to optimise Flask project structure  
+-> introduction
+  -> this lesson introduces the process of organising a flask project into a more modular structure, which is essential for scalability and maintainability in larger applications
+  -> after completing this part, continue to the next sections of the series, which cover the use of configuration classes, application factories, and blueprints to optimise flask project structure
 
--> Flask App Configuration Features  
-   -> While Flask is known for its simplicity and flexibility, projects can become difficult to maintain as they grow in size  
-   -> Flask provides several powerful features to help structure and organise your application as it expands:  
-      -> **Configurations**: Manage app settings (e.g., database URIs, security keys)  
-      -> **Blueprints**: Modularise different parts of your application into reusable components  
-      -> **Application Factories**: Dynamically create and configure the app instance  
+-> flask app configuration features
+  -> while flask is known for its simplicity and flexibility, projects can become difficult to maintain as they grow in size
+  -> flask provides several powerful features to help structure and organise your application as it expands:
+    -> configurations: manage app settings (e.g., database uris, security keys)
+    -> blueprints: modularise different parts of your application into reusable components
+    -> application factories: dynamically create and configure the app instance
 
--> Why go Modular?  
-   -> Breaking your project into modular components brings several benefits:  
-      -> **Maintainability**: A modular structure allows you to locate and modify individual parts of the project without affecting other areas  
-      -> **Scalability**: As your app grows, you can add new features without worrying about how they will impact the rest of the project  
-      -> **Collaboration**: Team members can work on separate modules without interfering with each other’s work  
-      -> **Testing**: Isolate different modules for focused, precise testing  
-      -> **Understandability**: A modular structure makes it easier to understand how the different components of your app fit together  
-      -> **Debugging**: Errors and bugs are easier to track down and fix because the codebase is more understandable  
-      -> **Documentation**: It is easier to write clear, targeted documentation for individual components rather than trying to document the entire project at once  
-   -> However, while modularity is advantageous, be cautious of over-engineering, especially for smaller projects where a more straightforward structure may be sufficient  
+-> why go modular?
+  -> breaking your project into modular components brings several benefits:
+    -> maintainability: a modular structure allows you to locate and modify individual parts of the project without affecting other areas
+    -> scalability: as your app grows, you can add new features without worrying about how they will impact the rest of the project
+    -> collaboration: team members can work on separate modules without interfering with each other’s work
+    -> testing: isolate different modules for focused, precise testing
+    -> understandability: a modular structure makes it easier to understand how the different components of your app fit together
+    -> debugging: errors and bugs are easier to track down and fix because the codebase is more understandable
+    -> documentation: it is easier to write clear, targeted documentation for individual components rather than trying to document the entire project at once
+  -> however, while modularity is advantageous, be cautious of over-engineering, especially for smaller projects where a more straightforward structure may be sufficient
 
--> Flask File and Folder Structure  
-   -> To make use of the modularity features of Flask, you need to adopt a folder structure that supports this flexibility. Here’s an example of a typical Flask project structure:  
-     ```plaintext  
-     flask-webdev/  
-     ├───app/  
-     │ ├── main/  
-     │ │ ├── __init__.py  
-     │ │ ├── errors.py  
-     │ │ ├── forms.py  
-     │ │ └── views.py  
-     │ ├── static/  
-     │ ├── templates/  
-     │ │ ├── base.html  
-     │ │ ├── error.html  
-     │ │ ├── index.html  
-     │ │ └── user.html  
-     │ ├── __init__.py  
-     │ └── models.py  
-     ├── env/  
-     ├── migrations/  
-     ├── config.py  
-     ├── ragtime.py  
-     └── requirements.txt  
-     ```  
-   -> **app/**: This folder holds your application’s core components. It is treated as a Python package, with an `__init__.py` file to allow Python to recognise the directory as a module  
-   -> **main/**: This submodule holds your main application logic, such as views, forms, error handling, and other core components  
-   -> **static/** and **templates/**: These folders contain your static assets (e.g., images, stylesheets) and HTML templates, respectively  
-   -> **migrations/**: Holds database migration scripts  
-   -> **env/**: The directory containing your virtual environment for managing project dependencies  
-   -> **config.py**: The file that contains configuration settings for your app (more on this below)  
-   -> **ragtime.py**: Manages database migrations (alternative to Flask-Migrate)  
-   -> **requirements.txt**: Lists the required Python packages for your project  
+-> flask file and folder structure
+  -> to make use of the modularity features of flask, you need to adopt a folder structure that supports this flexibility. here’s an example of a typical flask project structure:
+    ```plaintext
+    flask-webdev/
+    ├───app/
+    │ ├── main/
+    │ │ ├── __init__.py
+    │ │ ├── errors.py
+    │ │ ├── forms.py
+    │ │ └── views.py
+    │ ├── static/
+    │ ├── templates/
+    │ │ ├── base.html
+    │ │ ├── error.html
+    │ │ ├── index.html
+    │ │ └── user.html
+    │ ├── __init__.py
+    │ └── models.py
+    ├── env/
+    ├── migrations/
+    ├── config.py
+    ├── ragtime.py
+    └── requirements.txt
+    ```
+  -> app/: this folder holds your application’s core components. it is treated as a python package, with an __init__.py file to allow python to recognise the directory as a module
+  -> main/: this submodule holds your main application logic, such as views, forms, error handling, and other core components
+  -> static/ and templates/: these folders contain your static assets (e.g., images, stylesheets) and html templates, respectively
+  -> migrations/: holds database migration scripts
+  -> env/: the directory containing your virtual environment for managing project dependencies
+  -> config.py: the file that contains configuration settings for your app (more on this below)
+  -> ragtime.py: manages database migrations (alternative to flask-migrate)
+  -> requirements.txt: lists the required python packages for your project
 
--> Creating a Flask Class  
-   -> Once you have the right file and folder structure in place, you can start configuring your Flask app  
-   -> The configuration settings include important values such as:  
-      -> **Database settings** (e.g., URI for connecting to the database)  
-      -> **Security settings** (e.g., secret keys for session management)  
-      -> **Debugging settings** (e.g., whether to enable debug mode)  
-      -> **Logging settings** (e.g., how to handle app logs)  
-   -> Flask makes it easy to manage these settings by using a class-based approach for configuration  
+-> creating a flask class
+  -> once you have the right file and folder structure in place, you can start configuring your flask app
+  -> the configuration settings include important values such as:
+    -> database settings (e.g., uri for connecting to the database)
+    -> security settings (e.g., secret keys for session management)
+    -> debugging settings (e.g., whether to enable debug mode)
+    -> logging settings (e.g., how to handle app logs)
+  -> flask makes it easy to manage these settings by using a class-based approach for configuration
 
--> Configuration Class Example  
-   -> In Flask, the configuration settings are typically placed within a configuration class. Here's an example of how this might look in a `config.py` file:  
-     ```python  
-     import os  
-     basedir = os.path.abspath(os.path.dirname(__file__))  
-     class Config():  
-         SECRET_KEY = "keep it secret, keep it safe"  
-         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')  
-         SQLALCHEMY_TRACK_MODIFICATIONS = False  
-         @staticmethod  
-         def init_app(app):  
-             pass  
-     config = {'default': Config}  
-     ```  
-   -> **Explanation**:  
-      -> `SECRET_KEY`: A secret key for securing Flask sessions  
-      -> `SQLALCHEMY_DATABASE_URI`: The URI for the app’s database (in this case, a SQLite database)  
-      -> `SQLALCHEMY_TRACK_MODIFICATIONS`: A setting to disable Flask-SQLAlchemy’s modification tracking (useful for performance)  
-      -> **`init_app()`**: This is a static method that Flask expects in configuration classes for initialisation tasks. Although the method is currently empty, it can be used for setting up app-related configuration (like setting up extensions or database connections)  
-      -> **`config` dictionary**: This holds references to configuration classes. Even though only one class exists here (`Config`), this dictionary makes it easy to add additional configuration classes later for different environments (e.g., development, testing, production)  
+-> configuration class example
+  -> in flask, the configuration settings are typically placed within a configuration class. here's an example of how this might look in a config.py file:
+    ```python
+    import os
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    class Config():
+      SECRET_KEY = "keep it secret, keep it safe"
+      SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+      SQLALCHEMY_TRACK_MODIFICATIONS = False
+      @staticmethod
+      def init_app(app):
+        pass
+    config = {'default': Config}
+    ```
+  -> explanation:
+    -> secret_key: a secret key for securing flask sessions
+    -> sqlalchemy_database_uri: the uri for the app’s database (in this case, a sqlite database)
+    -> sqlalchemy_track_modifications: a setting to disable flask-sqlalchemy’s modification tracking (useful for performance)
+    -> init_app(): this is a static method that flask expects in configuration classes for initialisation tasks. although the method is currently empty, it can be used for setting up app-related configuration (like setting up extensions or database connections)
+    -> config dictionary: this holds references to configuration classes. even though only one class exists here (config), this dictionary makes it easy to add additional configuration classes later for different environments (e.g., development, testing, production)
 
--> Extending Config Class  
-   -> One of the advantages of using a class for configuration is that it can easily be extended. For example, if you need different settings for production and development environments, you can create new classes that inherit from the base `Config` class and override specific settings:  
-     ```python  
-     class DevelopmentConfig(Config):  
-         DEBUG = True  
-         SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'  
-   
-     class ProductionConfig(Config):  
-         DEBUG = False  
-         SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/prod_db'  
-     ```  
-   -> This approach allows you to keep a clean separation between environments, while reusing common configuration settings (like the `SECRET_KEY`)  
+-> extending config class
+  -> one of the advantages of using a class for configuration is that it can easily be extended. for example, if you need different settings for production and development environments, you can create new classes that inherit from the base config class and override specific settings:
+    ```python
+    class DevelopmentConfig(Config):
+      DEBUG = True
+      SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'
 
--> Summary: Flask App Configuration & Project Structure  
-   -> In this lesson, you:  
-      -> Understood the limitations of using a single file for larger Flask projects  
-      -> Learned how to organise your project with a modular structure, including how to separate core app components and configuration settings  
-      -> Discovered how to define and use configuration classes in a separate file to manage settings in a more scalable way  
-   -> These principles set the foundation for the next parts of the series, where you will explore application factories and blueprints, which will help you tie everything together and make your Flask project even more modular  
+    class ProductionConfig(Config):
+      DEBUG = False
+      SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/prod_db'
+    ```
+  -> this approach allows you to keep a clean separation between environments, while reusing common configuration settings (like the secret_key)
+
+-> summary: flask app configuration & project structure
+  -> in this lesson, you:
+    -> understood the limitations of using a single file for larger flask projects
+    -> learned how to organise your project with a modular structure, including how to separate core app components and configuration settings
+    -> discovered how to define and use configuration classes in a separate file to manage settings in a more scalable way
+  -> these principles set the foundation for the next parts of the series, where you will explore application factories and blueprints, which will help you tie everything together and make your flask project even more modular
